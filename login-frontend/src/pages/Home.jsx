@@ -1,11 +1,11 @@
-import Login from "../components/login";
+import Login from "../components/Login";
 import Logout from "../components/Logout";
 
 function Home() {
     return ( 
         <div>
             <Login/><hr /><br />
-            <Logout/>
+            <Logout/><hr /><br />
         </div>
      );
 }

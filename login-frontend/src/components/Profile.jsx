@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -8,7 +8,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/profile", { withCredentials: true });
+        const response = await api.get("/profile");
         setUser(response.data.user);
       } catch (error) {
         setMessage(error.response?.data?.message || "Not authenticated");

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import Home from './pages/home'
+import Home from "./pages/Home"
 import Profile from './components/Profile'
 
 function App() {
@@ -14,4 +14,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

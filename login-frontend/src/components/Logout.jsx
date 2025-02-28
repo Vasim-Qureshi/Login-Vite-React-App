@@ -1,12 +1,13 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../api";
 
 function Logout() {
   const [message, setMessage] = useState("");
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5000/logout", {}, { withCredentials: true });
+      await api.post("/logout");
+      localStorage.removeItem("accessToken");
       setMessage("Logged out successfully");
     } catch (error) {
       setMessage("Logout failed");

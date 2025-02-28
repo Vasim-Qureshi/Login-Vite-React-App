@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../api"
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -8,12 +8,9 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/login",
-        { username, password },
-        { withCredentials: true } // Allows sending cookies
-      );
-      setMessage(response.data.message);
+      const response = await api.post("/login", { username, password });
+      localStorage.setItem("accessToken", response.data.accessToken);
+      setMessage("Login successful");
     } catch (error) {
       setMessage(error.response?.data?.message || "Login failed");
     }

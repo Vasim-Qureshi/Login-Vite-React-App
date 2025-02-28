@@ -16,10 +16,10 @@ GH CLI COMMANDS :-
   issue
   label
   org
-  pr => PULL REQUAST COMMAND
-  project
+  pr =>  Manage pull requests
+  project => Work with GitHub Projects.
   release
-  repo
+  repo => Manage repositories
   ruleset
   run
   search
