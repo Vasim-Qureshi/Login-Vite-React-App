@@ -4,18 +4,32 @@ import api from "../api";
 function Profile() {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // Prevent multiple calls
 
   useEffect(() => {
+    let isMounted = true;
+    
     const fetchProfile = async () => {
       try {
         const response = await api.get("/profile");
-        setUser(response.data.user);
+        if (isMounted) {
+          setUser(response.data.user);
+          setIsLoading(false);
+        }
       } catch (error) {
-        setMessage(error.response?.data?.message || "Not authenticated");
+        if (isMounted) {
+          setMessage(error.response?.data?.message || "Not authenticated");
+          setIsLoading(false);
+        }
       }
     };
-    fetchProfile();
-  }, []);
+
+    if (isLoading) { // Prevent infinite loop
+      fetchProfile();
+    }
+
+    return () => { isMounted = false; };
+  }, [isLoading]);
 
   return (
     <div>

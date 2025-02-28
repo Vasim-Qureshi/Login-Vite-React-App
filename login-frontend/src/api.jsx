@@ -1,30 +1,34 @@
 import axios from "axios";
-// import Cookies from "js-cookie";
 
 const api = axios.create({
   baseURL: "http://localhost:5000",
-  withCredentials: true, // Allows cookies to be sent
+  withCredentials: true, 
 });
 
-// Function to refresh token
+let isRefreshing = false; // Prevent multiple refresh calls
+
 const refreshToken = async () => {
+  if (isRefreshing) return null;
+  isRefreshing = true;
+
   try {
     const response = await api.post("/refresh");
+    localStorage.setItem("accessToken", response.data.accessToken);
+    isRefreshing = false;
     return response.data.accessToken;
   } catch (error) {
+    isRefreshing = false;
+    console.error("Refresh token failed:", error.response?.data);
     return null;
   }
 };
 
-// Request interceptor to attach access token
+// Attach token to requests
 api.interceptors.request.use(async (config) => {
   let accessToken = localStorage.getItem("accessToken");
 
   if (!accessToken) {
     accessToken = await refreshToken();
-    if (accessToken) {
-      localStorage.setItem("accessToken", accessToken);
-    }
   }
 
   if (accessToken) {
@@ -32,6 +36,8 @@ api.interceptors.request.use(async (config) => {
   }
 
   return config;
+}, (error) => {
+  return Promise.reject(error);
 });
 
 export default api;
